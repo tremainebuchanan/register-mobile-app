@@ -1,4 +1,4 @@
-package com.tremainebuchanan.register;
+package com.tremainebuchanan.register.utils;
 
 import android.util.Log;
 

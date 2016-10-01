@@ -1,4 +1,4 @@
-package com.tremainebuchanan.register;
+package com.tremainebuchanan.register.utils;
 
 /**
  * Created by captain_kirk on 9/30/16.

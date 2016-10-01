@@ -1,4 +1,4 @@
-package com.tremainebuchanan.register;
+package com.tremainebuchanan.register.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.tremainebuchanan.register.R;
 
 public class Dashboard extends AppCompatActivity {
     private static final String TAG = Dashboard.class.getSimpleName();

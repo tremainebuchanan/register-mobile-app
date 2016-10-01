@@ -1,7 +1,9 @@
-package com.tremainebuchanan.register;
+package com.tremainebuchanan.register.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.tremainebuchanan.register.R;
 
 public class MainActivity extends AppCompatActivity {
 

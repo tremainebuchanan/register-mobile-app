@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="com.tremainebuchanan.register.LoginActivity">
+    tools:context="com.tremainebuchanan.register.activities.LoginActivity">
 
       <EditText
             android:id="@+id/email"
