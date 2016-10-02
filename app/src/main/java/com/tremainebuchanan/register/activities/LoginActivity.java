@@ -1,5 +1,6 @@
 package com.tremainebuchanan.register.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,20 +15,12 @@ import android.widget.Toast;
 import com.tremainebuchanan.register.R;
 import com.tremainebuchanan.register.data.User;
 import com.tremainebuchanan.register.services.Api;
-import com.tremainebuchanan.register.utils.AppConfig;
 import com.tremainebuchanan.register.utils.JSONUtil;
 import com.tremainebuchanan.register.utils.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -36,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText password;
     Context context;
     User user;
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +54,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class LoginTask extends AsyncTask<String, Void, String> {
+
+        public LoginTask(Context context){
+            dialog = new ProgressDialog(context);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getResources().getString(R.string.user_auth_progress));
+        }
+
+        protected void onPreExecute() {
+            dialog.show();
+        }
+
         @Override
         protected String doInBackground(String... urls) {
+
             String json = JSONUtil.toJSON(user);
             return Api.authUser(json, client);
         }
         @Override
         protected void onPostExecute(String result) {
+            if(dialog.isShowing()) dialog.dismiss();
             processServerResponse(result);
         }
     }
@@ -74,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateEmail(String email){
         return email.isEmpty();
     }
+
     private boolean validatePassword(String password){
         return password.isEmpty();
     }
@@ -83,8 +91,7 @@ public class LoginActivity extends AppCompatActivity {
        String user_password = password.getText().toString().trim();
        if (!validateEmail(user_email) && !validatePassword(user_password)) {
            user = new User(user_email, user_password);
-           LoginTask loginTask = new LoginTask();
-           loginTask.execute("");
+           new LoginTask(context).execute("");
        }else{
            Toast.makeText(getApplicationContext(), R.string.credentials_error, Toast.LENGTH_LONG).show();
        }
