@@ -45,7 +45,7 @@ public final class Utils {
                 JSONArray students = session.getJSONArray("st_students");
                 //String session_name = session_type_name.getString("se_type_name");
                 String session_date = session.getString("se_created");
-                sessions.add(new Session(session_id, session_name, session_date, students.length()));
+                sessions.add(new Session(session_id, session_name, session_date, "M"));
             }
             return sessions;
         }catch (JSONException e) {

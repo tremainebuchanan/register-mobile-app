@@ -1,10 +1,13 @@
 package com.tremainebuchanan.register.services;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.tremainebuchanan.register.data.Session;
+import com.tremainebuchanan.register.data.Student;
 import com.tremainebuchanan.register.data.User;
+import com.tremainebuchanan.register.utils.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +31,7 @@ public class Api {
     private static final String LOGIN_URL = "https://attend-app.herokuapp.com/login";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String TAG = Api.class.getSimpleName();
+    private Context context;
 
     public static String authUser(String user, OkHttpClient client){
         return post(user, client, LOGIN_URL);
@@ -45,8 +49,8 @@ public class Api {
         return null;
     }
 
-    private static String get(String resource, OkHttpClient client){
-        String url = BASE_URL + resource;
+    private static String get(String rel_url, OkHttpClient client){
+        String url = BASE_URL + rel_url;
         Request request = new Request.Builder().url(url).build();
         try{
             Response response = client.newCall(request).execute();
@@ -57,9 +61,36 @@ public class Api {
         return null;
     }
 
-    public static ArrayList<Session> getSessions(OkHttpClient client){
-        String response = get("sessions", client);
+    public static ArrayList<Session> getSessions(OkHttpClient client, String user_id){
+        String rel_url = "registers?re_assigned_to=" + user_id;
+        String response = get(rel_url, client);
         return parseResponse(response);
+    }
+
+    public static ArrayList<Student> getStudents(OkHttpClient client, String id){
+        String rel_url = "registers/57f3e51290f28070ba9e72b3";
+        String response = get(rel_url, client);
+        return parseStudentResponse(response);
+    }
+
+    private static ArrayList<Student> parseStudentResponse(String response){
+        ArrayList<Student> students = new ArrayList<>();
+        if(TextUtils.isEmpty(response)){ return null; }
+
+        try{
+            JSONObject baseJSONResponse = new JSONObject(response);
+            JSONArray studentsArray = baseJSONResponse.getJSONArray("students");
+            for(int i = 0; i< studentsArray.length(); i++){
+                JSONObject student = studentsArray.getJSONObject(i);
+                String student_name = student.getString("name");
+                String student_id = student.getString("_id");
+                students.add(new Student(student_id, student_name, "male", true));
+            }
+            return students;
+        }catch (JSONException e) {
+            Log.e(TAG, "Problem parsing the student JSON results", e);
+        }
+        return null;
     }
 
     private static ArrayList<Session> parseResponse(String response){
@@ -67,14 +98,13 @@ public class Api {
         if(TextUtils.isEmpty(response)){ return null; }
 
         try{
-            JSONObject baseJSONResponse = new JSONObject(response);
-            JSONArray sessionsArray = baseJSONResponse.getJSONArray("sessions");
-            for (int i = 0; i < sessionsArray.length(); i++) {
-                JSONObject session = sessionsArray.getJSONObject(i);
-                String session_id = session.getString("_id");
-                String session_name = session.getString("se_name");
-                String session_date = session.getString("se_created");
-                sessions.add(new Session(session_id, session_name, session_date, 25));
+            JSONArray baseArray = new JSONArray(response);
+            for(int i = 0; i < baseArray.length();  i++){
+                JSONObject register = baseArray.getJSONObject(i);
+                String session_id = register.getString("_id");
+                JSONObject subject = register.getJSONObject("su_id");
+                String session_name = subject.getString("su_title");
+                sessions.add(new Session(session_id, session_name, "M"));
             }
             return sessions;
         }catch (JSONException e) {
@@ -82,5 +112,6 @@ public class Api {
         }
         return null;
     }
+
 
 }

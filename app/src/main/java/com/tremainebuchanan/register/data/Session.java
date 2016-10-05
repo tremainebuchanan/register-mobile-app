@@ -9,12 +9,28 @@ public class Session {
     private String mSessionName;
     private String mCreated;
     private Number mNumberofStudents;
+    private String mStatus;
 
-    public Session(String mSessionId, String mSessionName, String mCreated, Number mNumberofStudents) {
+    public Session(String mSessionId, String mSessionName, String mCreated, String mStatus) {
         this.mSessionId = mSessionId;
         this.mSessionName = mSessionName;
         this.mCreated = mCreated;
-        this.mNumberofStudents = mNumberofStudents;
+        //this.mNumberofStudents = mNumberofStudents;
+        this.mStatus = mStatus;
+    }
+
+    public Session(String mSessionId, String mSessionName, String mStatus) {
+        this.mSessionId = mSessionId;
+        this.mSessionName = mSessionName;
+        this.mStatus = mStatus;
+    }
+
+    public String getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(String mStatus) {
+        this.mStatus = mStatus;
     }
 
     public Number getNumberofStudents(){ return mNumberofStudents; }

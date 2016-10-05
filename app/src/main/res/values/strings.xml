@@ -7,4 +7,5 @@
     <string name="credentials_error">Your email/password is required.</string>
     <string name="login_attempt_failure">Your email/password is incorrect.</string>
     <string name="user_auth_progress">Authenticating</string>
+    <string name="view_btn">view</string>
 </resources>

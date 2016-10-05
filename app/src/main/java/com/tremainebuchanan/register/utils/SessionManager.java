@@ -39,6 +39,10 @@ public class SessionManager {
         Log.i(TAG, "User id set.");
     }
 
+    public static String getUserId(Context context){
+        return getPrefs(context).getString(USER_ID, null);
+    }
+
 
 
 }
