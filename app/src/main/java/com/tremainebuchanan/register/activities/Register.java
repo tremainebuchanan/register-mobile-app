@@ -1,8 +1,12 @@
 package com.tremainebuchanan.register.activities;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,7 +23,10 @@ import com.tremainebuchanan.register.adapters.StudentAdapter;
 import com.tremainebuchanan.register.data.Session;
 import com.tremainebuchanan.register.data.Student;
 import com.tremainebuchanan.register.services.Api;
+import com.tremainebuchanan.register.utils.JSONUtil;
 import com.tremainebuchanan.register.utils.SessionManager;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +41,16 @@ public class Register extends AppCompatActivity {
     private ArrayList<Student> studentList = new ArrayList<>();
     private StudentAdapter mAdapter;
     private static final String TAG = Register.class.getSimpleName();
+    String re_id, su_id, title;
+    Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         Intent intent = getIntent();
-        String title = intent.getStringExtra("title");
+        title = intent.getStringExtra("title");
+        re_id = intent.getStringExtra("re_id");
+        su_id = intent.getStringExtra("su_id");
         setTitle(title);
 
         spinner = (ProgressBar) findViewById(R.id.progressbar);
@@ -68,12 +79,31 @@ public class Register extends AppCompatActivity {
 
         @Override
         protected ArrayList<Student> doInBackground(String... urls) {
-            return Api.getStudents(client, SessionManager.getUserId(context));
+            return Api.getStudents(client, re_id);
         }
         @Override
         protected void onPostExecute(ArrayList<Student> result) {
             spinner.setVisibility(View.GONE);
             updateUI(result);
+        }
+    }
+
+    private class MarkTask extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected void onPreExecute() {
+            spinner.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+                showDialog();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            return Api.markRegister(client, re_id);
+            //return null;
         }
     }
 
@@ -85,10 +115,31 @@ public class Register extends AppCompatActivity {
     }
 
     public void mark(View view){
+        ArrayList<String> attendanceList = new ArrayList<>();
         int len = studentList.size();
-        //Log.i(TAG, "" + len);
         for(int i=0;i<len;i++){
-            Log.i(TAG, ""+studentList.get(i).isPresent());
+            String student = JSONUtil.toJSON(studentList.get(i), re_id, SessionManager.getUserId(context), SessionManager.getOrgId(context), su_id);
+            attendanceList.add(student);
         }
+        JSONArray array = new JSONArray(attendanceList);
+        //new MarkTask().execute("");
+        //showDialog();
+    }
+    //TODO convert this into a snack bar or toast
+    public void showDialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+
+        alertDialogBuilder.setTitle("Marked");
+        alertDialogBuilder
+                .setMessage("Your register has been marked")
+                .setCancelable(false)
+                .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

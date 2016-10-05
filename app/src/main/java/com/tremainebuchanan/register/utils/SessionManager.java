@@ -43,6 +43,9 @@ public class SessionManager {
         return getPrefs(context).getString(USER_ID, null);
     }
 
+    public static String getOrgId(Context context){
+        return getPrefs(context).getString(ORG_ID, null);
+    }
 
 
 }

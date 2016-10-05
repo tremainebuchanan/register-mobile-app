@@ -24,19 +24,16 @@ import java.util.List;
 
 public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHolder>{
     private List<Session> sessionList;
-    private static final String TAG = "SessionAdapter";
+    private static final String TAG = SessionAdapter.class.getSimpleName();
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView numStudents, name, date, status;
-        Button btn;
+        TextView name, count;
         CardView cv;
         public final Context context;
         public ViewHolder(final View view) {
             super(view);
             context = view.getContext();
-            //numStudents = (TextView) view.findViewById(R.id.num_of_students);
+            count = (TextView) view.findViewById(R.id.count);
             name = (TextView) view.findViewById(R.id.session_name);
-            //date = (TextView) view.findViewById(R.id.session_date);
-            status = (TextView) view.findViewById(R.id.status);
             cv = (CardView) view.findViewById(R.id.card_view);
         }
     }
@@ -55,16 +52,17 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Session session = sessionList.get(position);
         holder.name.setText(session.getSessionName());
-        holder.status.setText(session.getStatus());
+        holder.count.setText(session.getStudentCount());
         holder.cv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 String activity_title = holder.name.getText().toString();
                 Intent intent = new Intent(view.getContext(), Register.class );
                 intent.putExtra("title", activity_title);
+                intent.putExtra("re_id", session.getSessionId());
+                intent.putExtra("su_id", session.getSubjectId());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(intent);
-
             }
         });
     }

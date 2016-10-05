@@ -1,23 +1,17 @@
 package com.tremainebuchanan.register.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.tremainebuchanan.register.R;
 import com.tremainebuchanan.register.adapters.SessionAdapter;
-import com.tremainebuchanan.register.adapters.StudentAdapter;
 import com.tremainebuchanan.register.data.Session;
-import com.tremainebuchanan.register.data.Student;
 import com.tremainebuchanan.register.services.Api;
 import com.tremainebuchanan.register.utils.SessionManager;
 

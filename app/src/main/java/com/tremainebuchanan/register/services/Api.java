@@ -30,6 +30,8 @@ public class Api {
     private static final String BASE_URL = "https://attend-app.herokuapp.com/";
     private static final String LOGIN_URL = "https://attend-app.herokuapp.com/login";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final String PRESENT_ID = "57f41e579e5dc466137b18a4";
+    private static final String ABSENT_ID = "57f41e6d9e5dc466137b18a5";
     private static final String TAG = Api.class.getSimpleName();
     private Context context;
 
@@ -68,9 +70,19 @@ public class Api {
     }
 
     public static ArrayList<Student> getStudents(OkHttpClient client, String id){
-        String rel_url = "registers/57f3e51290f28070ba9e72b3";
+        String rel_url = "registers/" + id;
         String response = get(rel_url, client);
         return parseStudentResponse(response);
+    }
+
+    public static String markRegister(OkHttpClient client, String register_id){
+        String rel_url = "registers/" + register_id + "/attendance";
+        String response = get(rel_url, client);
+        return parseRegisterResponse(response);
+    }
+
+    private static String parseRegisterResponse(String response){
+        return response;
     }
 
     private static ArrayList<Student> parseStudentResponse(String response){
@@ -104,13 +116,23 @@ public class Api {
                 String session_id = register.getString("_id");
                 JSONObject subject = register.getJSONObject("su_id");
                 String session_name = subject.getString("su_title");
-                sessions.add(new Session(session_id, session_name, "M"));
+                String student_count = register.getString("count");
+                String subject_id = subject.getString("_id");
+                sessions.add(new Session(session_id, session_name, student_count, subject_id));
             }
             return sessions;
         }catch (JSONException e) {
             Log.e(TAG, "Problem parsing the student JSON results", e);
         }
         return null;
+    }
+    //TODO move both functions to Student class
+    public static String getPresentId(){
+        return PRESENT_ID;
+    }
+
+    public static String getAbsentId(){
+        return ABSENT_ID;
     }
 
 
