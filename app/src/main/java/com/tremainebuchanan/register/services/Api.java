@@ -41,7 +41,8 @@ public class Api {
 
     private static String post(String json, OkHttpClient client, String url){
         RequestBody body = RequestBody.create(JSON, json);
-        Request request = new Request.Builder().url(url).post(body).build();
+        String abs_url = BASE_URL + url;
+        Request request = new Request.Builder().url(abs_url).post(body).build();
         try{
             Response response = client.newCall(request).execute();
             return response.body().string();
@@ -75,14 +76,22 @@ public class Api {
         return parseStudentResponse(response);
     }
 
-    public static String markRegister(OkHttpClient client, String register_id){
-        String rel_url = "registers/" + register_id + "/attendance";
-        String response = get(rel_url, client);
+    public static String markRegister(OkHttpClient client, String register_id, String json ){
+        String rel_url = "students/" + register_id + "/attendance";
+        String response = post(json, client, rel_url);
         return parseRegisterResponse(response);
+        //return null;
     }
 
     private static String parseRegisterResponse(String response){
-        return response;
+        try {
+            JSONObject res = new JSONObject(response);
+            Log.i(TAG, res.toString());
+            return null;
+        }catch(JSONException e){
+            Log.e(TAG, "Error in parsing attendance post response");
+        }
+        return null;
     }
 
     private static ArrayList<Student> parseStudentResponse(String response){
@@ -118,7 +127,8 @@ public class Api {
                 String session_name = subject.getString("su_title");
                 String student_count = register.getString("count");
                 String subject_id = subject.getString("_id");
-                sessions.add(new Session(session_id, session_name, student_count, subject_id));
+                JSONArray students = register.getJSONArray("students");
+                sessions.add(new Session(session_id, session_name, student_count, subject_id, students.toString()));
             }
             return sessions;
         }catch (JSONException e) {

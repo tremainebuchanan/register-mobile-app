@@ -10,13 +10,15 @@ public class Session {
     private String mCreated;
     private String mStudentsCount;
     private String mSubjectId;
+    private String students;
 
-    public Session(String mSessionId, String mSessionName, String mStudentsCount, String mSubjectId) {
+    public Session(String mSessionId, String mSessionName, String mStudentsCount, String mSubjectId, String students) {
         this.mSessionId = mSessionId;
         this.mSessionName = mSessionName;
         //this.mCreated = mCreated;
         this.mStudentsCount = mStudentsCount;
         this.mSubjectId = mSubjectId;
+        this.students = students;
 
     }
 
@@ -54,5 +56,13 @@ public class Session {
 
     public void setCreated(String mCreated) {
         this.mCreated = mCreated;
+    }
+
+    public String getStudents() {
+        return students;
+    }
+
+    public void setStudents(String students) {
+        this.students = students;
     }
 }

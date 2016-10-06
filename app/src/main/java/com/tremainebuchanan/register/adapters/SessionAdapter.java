@@ -2,6 +2,7 @@ package com.tremainebuchanan.register.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +16,8 @@ import com.tremainebuchanan.register.R;
 import com.tremainebuchanan.register.activities.MainActivity;
 import com.tremainebuchanan.register.activities.Register;
 import com.tremainebuchanan.register.data.Session;
+
+import org.json.JSONArray;
 
 import java.util.List;
 
@@ -56,8 +59,10 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
         holder.cv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                Log.i(TAG, session.getStudents());
                 String activity_title = holder.name.getText().toString();
                 Intent intent = new Intent(view.getContext(), Register.class );
+                intent.putExtra("students", session.getStudents());
                 intent.putExtra("title", activity_title);
                 intent.putExtra("re_id", session.getSessionId());
                 intent.putExtra("su_id", session.getSubjectId());
