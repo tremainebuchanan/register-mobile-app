@@ -36,7 +36,7 @@ public class Api {
     private Context context;
 
     public static String authUser(String user, OkHttpClient client){
-        return post(user, client, LOGIN_URL);
+        return post(user, client, "login");
     }
 
     private static String post(String json, OkHttpClient client, String url){

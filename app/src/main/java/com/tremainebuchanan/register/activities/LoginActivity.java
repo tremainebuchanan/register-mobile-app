@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... urls) {
-
             String json = JSONUtil.toJSON(user);
             return Api.authUser(json, client);
         }
@@ -98,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void processServerResponse(String response){
+        Log.d(TAG, response);
         try{
             JSONObject jsonObject = new JSONObject(response);
             if (jsonObject.getString("success").equals("true")) {

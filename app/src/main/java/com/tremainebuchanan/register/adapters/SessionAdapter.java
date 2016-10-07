@@ -2,22 +2,18 @@ package com.tremainebuchanan.register.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tremainebuchanan.register.R;
-import com.tremainebuchanan.register.activities.MainActivity;
 import com.tremainebuchanan.register.activities.Register;
 import com.tremainebuchanan.register.data.Session;
-
-import org.json.JSONArray;
 
 import java.util.List;
 
@@ -26,55 +22,75 @@ import java.util.List;
  */
 
 public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHolder>{
-    private List<Session> sessionList;
-    private static final String TAG = SessionAdapter.class.getSimpleName();
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView name, count;
-        CardView cv;
-        public final Context context;
-        public ViewHolder(final View view) {
-            super(view);
-            context = view.getContext();
-            count = (TextView) view.findViewById(R.id.count);
-            name = (TextView) view.findViewById(R.id.session_name);
-            cv = (CardView) view.findViewById(R.id.card_view);
-        }
+
+    public interface OnItemClickListener{
+         void onItemClick(Session session);
     }
 
-    public SessionAdapter(List<Session> sessionList){
+    private List<Session> sessionList;
+    private static final String TAG = SessionAdapter.class.getSimpleName();
+
+    OnItemClickListener listener;
+
+    public SessionAdapter(List<Session> sessionList, OnItemClickListener listener){
+        this.listener = listener;
         this.sessionList = sessionList;
     }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.session_item, parent, false);
+                .inflate(R.layout.session_list_item, parent, false);
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Session session = sessionList.get(position);
-        holder.name.setText(session.getSessionName());
-        holder.count.setText(session.getStudentCount());
-        holder.cv.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Log.i(TAG, session.getStudents());
-                String activity_title = holder.name.getText().toString();
-                Intent intent = new Intent(view.getContext(), Register.class );
-                intent.putExtra("students", session.getStudents());
-                intent.putExtra("title", activity_title);
-                intent.putExtra("re_id", session.getSessionId());
-                intent.putExtra("su_id", session.getSubjectId());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(intent);
-            }
-        });
+//        final Session session = sessionList.get(position);
+//        holder.name.setText(session.getSessionName());
+//        holder.count.setText(session.getStudentCount());
+        holder.bind(sessionList.get(position), listener);
+//        holder..setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                Log.i(TAG, session.getStudents());
+//                String activity_title = holder.name.getText().toString();
+//                Intent intent = new Intent(view.getContext(), Register.class );
+//                intent.putExtra("students", session.getStudents());
+//                intent.putExtra("title", activity_title);
+//                intent.putExtra("re_id", session.getSessionId());
+//                intent.putExtra("su_id", session.getSubjectId());
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                view.getContext().startActivity(intent);
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
         return sessionList.size();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name, count;
+        public final Context context;
+
+        public ViewHolder(final View view) {
+            super(view);
+            context = view.getContext();
+            count = (TextView) view.findViewById(R.id.count);
+            name = (TextView) view.findViewById(R.id.session_name);
+        }
+
+        public void bind(final Session session, final OnItemClickListener listener) {
+            name.setText(session.getSessionName());
+            count.setText(session.getStudentCount());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(session);
+                }
+            });
+        }
     }
 
 }
