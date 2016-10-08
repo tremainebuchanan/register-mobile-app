@@ -8,32 +8,31 @@ public class Session {
     private String mSessionId;
     private String mSessionName;
     private String mCreated;
-    private Number mNumberofStudents;
-    private String mStatus;
+    private String mStudentsCount;
+    private String mSubjectId;
+    private String students;
 
-    public Session(String mSessionId, String mSessionName, String mCreated, String mStatus) {
+    public Session(String mSessionId, String mSessionName, String mStudentsCount, String mSubjectId, String students) {
         this.mSessionId = mSessionId;
         this.mSessionName = mSessionName;
-        this.mCreated = mCreated;
-        //this.mNumberofStudents = mNumberofStudents;
-        this.mStatus = mStatus;
+        //this.mCreated = mCreated;
+        this.mStudentsCount = mStudentsCount;
+        this.mSubjectId = mSubjectId;
+        this.students = students;
+
     }
 
-    public Session(String mSessionId, String mSessionName, String mStatus) {
-        this.mSessionId = mSessionId;
-        this.mSessionName = mSessionName;
-        this.mStatus = mStatus;
+    public String getSubjectId() {
+        return mSubjectId;
     }
 
-    public String getStatus() {
-        return mStatus;
+    public void setSubjectId(String mSubjectId) {
+        this.mSubjectId = mSubjectId;
     }
 
-    public void setStatus(String mStatus) {
-        this.mStatus = mStatus;
-    }
+    public String getStudentCount(){ return mStudentsCount; }
 
-    public Number getNumberofStudents(){ return mNumberofStudents; }
+    public void setStudentCount(String mStudentsCount){ this.mStudentsCount = mStudentsCount; }
 
     public String getSessionId() {
         return mSessionId;
@@ -57,5 +56,13 @@ public class Session {
 
     public void setCreated(String mCreated) {
         this.mCreated = mCreated;
+    }
+
+    public String getStudents() {
+        return students;
+    }
+
+    public void setStudents(String students) {
+        this.students = students;
     }
 }

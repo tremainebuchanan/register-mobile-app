@@ -1,5 +1,6 @@
 package com.tremainebuchanan.register.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import okhttp3.OkHttpClient;
 
-public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = LoginActivity.class.getSimpleName();
+public class Login extends AppCompatActivity {
+    private static final String TAG = Login.class.getSimpleName();
     OkHttpClient client;
     EditText email;
     EditText password;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         context = this;
         if(SessionManager.isLoggedIn(context)){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(Login.this, Main.class);
             startActivity(intent);
             finish();
         }else{
@@ -44,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
             Button btn = (Button) findViewById(R.id.btnLogin);
             email = (EditText) findViewById(R.id.email);
             password = (EditText) findViewById(R.id.password);
-
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     attemptLogin();
@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... urls) {
-
             String json = JSONUtil.toJSON(user);
             return Api.authUser(json, client);
         }
@@ -79,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean validateEmail(String email){
-        return email.isEmpty();
+        return email.isEmpty() && email.contains("@");
     }
 
     private boolean validatePassword(String password){
@@ -98,12 +97,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void processServerResponse(String response){
+        Log.d(TAG, response);
         try{
             JSONObject jsonObject = new JSONObject(response);
             if (jsonObject.getString("success").equals("true")) {
                 JSONObject user = jsonObject.getJSONObject("user");
                 SessionManager.setUser(context, user);
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(Login.this, Main.class);
                 startActivity(intent);
                 finish();
                 Log.i(TAG, "User authenticated");
@@ -115,6 +115,5 @@ public class LoginActivity extends AppCompatActivity {
             Log.e(TAG, "Error in parsing json server response");
         }
     }
-
 
 }

@@ -8,36 +8,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tremainebuchanan.register.R;
-import com.tremainebuchanan.register.activities.MainActivity;
+import com.tremainebuchanan.register.activities.Main;
 import com.tremainebuchanan.register.activities.Register;
 import com.tremainebuchanan.register.data.Session;
 
 import java.util.List;
 
 /**
- * Created by captain_kirk on 10/1/16.
+ * Created by captain_kirk on 10/8/16.
  */
 
 public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHolder>{
     private List<Session> sessionList;
-    private static final String TAG = "SessionAdapter";
+    private final String TAG = SessionAdapter.class.getSimpleName();
+
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView numStudents, name, date, status;
-        Button btn;
-        CardView cv;
+        TextView name, count;
+        CardView card;
         public final Context context;
-        public ViewHolder(final View view) {
+        public ViewHolder(View view) {
             super(view);
             context = view.getContext();
-            //numStudents = (TextView) view.findViewById(R.id.num_of_students);
+            count = (TextView) view.findViewById(R.id.count);
             name = (TextView) view.findViewById(R.id.session_name);
-            //date = (TextView) view.findViewById(R.id.session_date);
-            status = (TextView) view.findViewById(R.id.status);
-            cv = (CardView) view.findViewById(R.id.card_view);
+            card = (CardView) view.findViewById(R.id.session_card);
         }
     }
 
@@ -47,7 +46,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.session_item, parent, false);
+                .inflate(R.layout.session_list_item, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -55,16 +54,17 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Session session = sessionList.get(position);
         holder.name.setText(session.getSessionName());
-        holder.status.setText(session.getStatus());
-        holder.cv.setOnClickListener(new View.OnClickListener(){
+        holder.count.setText(session.getStudentCount());
+        holder.card.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                String activity_title = holder.name.getText().toString();
                 Intent intent = new Intent(view.getContext(), Register.class );
-                intent.putExtra("title", activity_title);
+                intent.putExtra("students", session.getStudents());
+                intent.putExtra("title", session.getSessionName());
+                intent.putExtra("re_id", session.getSessionId());
+                intent.putExtra("su_id", session.getSubjectId());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(intent);
-
             }
         });
     }
