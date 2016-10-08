@@ -8,4 +8,5 @@
     <string name="login_attempt_failure">Your email/password is incorrect.</string>
     <string name="user_auth_progress">Authenticating</string>
     <string name="view_btn">view</string>
+    <string name="action_sign_in_short">Sign in</string>
 </resources>

@@ -4,9 +4,12 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +24,7 @@ import java.util.List;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHolder>{
     private List<Student> studentList;
-
+    private final String TAG = StudentAdapter.class.getSimpleName();
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView name, gender, initial;
         CheckBox attendance_status;
@@ -52,6 +55,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
         holder.name.setText(student.getName());
         holder.gender.setText(student.getGender());
         holder.initial.setText(student.getName().substring(0,1));
+
         holder.attendance_status.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

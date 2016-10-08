@@ -26,14 +26,14 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity {
+public class Main extends AppCompatActivity {
     OkHttpClient client;
     Context context;
     private ProgressBar spinner;
     private RecyclerView mRecyclerView;
     private List<Session> sessionList = new ArrayList<>();
     private SessionAdapter mAdapter;
-    private final String TAG = MainActivity.class.getSimpleName();
+    private final String TAG = Main.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +44,18 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new SessionAdapter(sessionList, new SessionAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Session session) {
-                showStudentList(session);
-            }
-        });
+//        mAdapter = new SessionAdapter(sessionList, new SessionAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Session session) {
+//                showStudentList(session);
+//            }
+//        });
+
+        //mAdapter = new SessionAdapter(sessionList);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new DividerItemDecorator(this));
+        //mRecyclerView.addItemDecoration(new DividerItemDecorator(this));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -87,18 +89,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSessionList(ArrayList<Session> sessions){
-        mAdapter = new SessionAdapter(sessions, new SessionAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Session session) {
-                showStudentList(session);
-            }
-        });
+//        mAdapter = new SessionAdapter(sessions, new SessionAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Session session) {
+//                showStudentList(session);
+//            }
+//        });
+        mAdapter = new SessionAdapter(sessions);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }
 
     private void showStudentList(Session session){
-        Intent intent = new Intent(MainActivity.this, Register.class );
+        Intent intent = new Intent(Main.this, Register.class );
         intent.putExtra("students", session.getStudents());
         intent.putExtra("title", session.getSessionName());
         intent.putExtra("re_id", session.getSessionId());

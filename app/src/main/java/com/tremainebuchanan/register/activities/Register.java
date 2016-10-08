@@ -23,6 +23,7 @@ import com.tremainebuchanan.register.adapters.StudentAdapter;
 import com.tremainebuchanan.register.data.Session;
 import com.tremainebuchanan.register.data.Student;
 import com.tremainebuchanan.register.services.Api;
+import com.tremainebuchanan.register.utils.DividerItemDecorator;
 import com.tremainebuchanan.register.utils.JSONUtil;
 import com.tremainebuchanan.register.utils.SessionManager;
 
@@ -62,7 +63,8 @@ public class Register extends AppCompatActivity {
 
         mAdapter = new StudentAdapter(studentList);
         mRecyclerView.setHasFixedSize(true);
-
+        mRecyclerView.addItemDecoration(new DividerItemDecorator(this));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
