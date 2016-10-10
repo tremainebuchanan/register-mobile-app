@@ -9,13 +9,23 @@ public class Student {
     private String name;
     private String gender;
     private boolean isPresent;
+    private String contact;
 
-    public Student(String id, String name, String gender, boolean isPresent) {
+    public Student(String id, String name, String gender, boolean isPresent, String contact) {
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.isPresent = isPresent;
+        this.contact = contact;
 
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public String getId(){ return id;  }

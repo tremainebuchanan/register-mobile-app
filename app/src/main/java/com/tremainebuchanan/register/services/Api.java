@@ -28,12 +28,10 @@ import okhttp3.Response;
 
 public class Api {
     private static final String BASE_URL = "https://attend-app.herokuapp.com/";
-    private static final String LOGIN_URL = "https://attend-app.herokuapp.com/login";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String PRESENT_ID = "57f41e579e5dc466137b18a4";
     private static final String ABSENT_ID = "57f41e6d9e5dc466137b18a5";
     private static final String TAG = Api.class.getSimpleName();
-    private Context context;
 
     public static String authUser(String user, OkHttpClient client){
         return post(user, client, "login");
@@ -64,7 +62,7 @@ public class Api {
         return null;
     }
 
-    public static ArrayList<Session> getSessions(OkHttpClient client, String user_id){
+    public static ArrayList<Session> getRegisters(OkHttpClient client, String user_id){
         String rel_url = "registers?re_assigned_to=" + user_id;
         String response = get(rel_url, client);
         return parseResponse(response);
@@ -86,8 +84,9 @@ public class Api {
     private static String parseRegisterResponse(String response){
         try {
             JSONObject res = new JSONObject(response);
-            Log.i(TAG, res.toString());
-            return null;
+            if(res.getString("message").equals("success")){
+                return "success";
+            }
         }catch(JSONException e){
             Log.e(TAG, "Error in parsing attendance post response");
         }
@@ -105,7 +104,9 @@ public class Api {
                 JSONObject student = studentsArray.getJSONObject(i);
                 String student_name = student.getString("name");
                 String student_id = student.getString("_id");
-                students.add(new Student(student_id, student_name, "male", true));
+                String gender = student.getString("st_gender");
+                String contact = student.getString("st_contact");
+                students.add(new Student(student_id, student_name, gender, true, contact));
             }
             return students;
         }catch (JSONException e) {

@@ -1,6 +1,6 @@
 package com.tremainebuchanan.register.activities;
 
-import android.app.Dialog;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,14 +15,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.tremainebuchanan.register.R;
-import com.tremainebuchanan.register.adapters.SessionAdapter;
+
 import com.tremainebuchanan.register.adapters.StudentAdapter;
-import com.tremainebuchanan.register.data.Session;
 import com.tremainebuchanan.register.data.Student;
 import com.tremainebuchanan.register.services.Api;
+import com.tremainebuchanan.register.services.SMS;
 import com.tremainebuchanan.register.utils.DividerItemDecorator;
 import com.tremainebuchanan.register.utils.JSONUtil;
 import com.tremainebuchanan.register.utils.SessionManager;
@@ -32,8 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import okhttp3.OkHttpClient;
 
 public class Register extends AppCompatActivity {
@@ -45,6 +42,8 @@ public class Register extends AppCompatActivity {
     private StudentAdapter mAdapter;
     private static final String TAG = Register.class.getSimpleName();
     String re_id, su_id, title, students;
+    ProgressDialog dialog;
+    ArrayList<Student> absentList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,33 +70,30 @@ public class Register extends AppCompatActivity {
 
         client = new OkHttpClient();
         context = this;
-        //new StudentTask().execute("");
         renderStudentList(students);
 
     }
 
-    private class StudentTask extends AsyncTask<String, Void, ArrayList<Student>>{
+    private class MarkTask extends AsyncTask<String, Void, String>{
+
+        public MarkTask(Context context){
+            dialog = new ProgressDialog(context);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getResources().getString(R.string.marking_progress));
+        }
+
         @Override
         protected void onPreExecute() {
-            spinner.setVisibility(View.VISIBLE);
+            dialog.show();
         }
-
-        @Override
-        protected ArrayList<Student> doInBackground(String... urls) {
-            return Api.getStudents(client, re_id);
-        }
-        @Override
-        protected void onPostExecute(ArrayList<Student> result) {
-            spinner.setVisibility(View.GONE);
-            updateUI(result);
-        }
-    }
-
-    private class MarkTask extends AsyncTask<String, Void, String>{
 
         @Override
         protected void onPostExecute(String result) {
-            showDialog();
+            if(result.equals("success")){
+                SMS.send(absentList, title);
+                if(dialog.isShowing()) dialog.dismiss();
+                showDialog();
+            }
         }
 
         @Override
@@ -122,7 +118,9 @@ public class Register extends AppCompatActivity {
                 JSONObject student = studentsArray.getJSONObject(i);
                 String student_id = student.getString("_id");
                 String student_name = student.getString("name");
-                studentsList.add(new Student(student_id, student_name, "male", true));
+                String contact = student.getString("st_contact");
+                String gender = student.getString("st_gender");
+                studentsList.add(new Student(student_id, student_name, gender, true, contact));
             }
             setAdapter(studentsList);
         }catch(JSONException e){
@@ -139,12 +137,16 @@ public class Register extends AppCompatActivity {
 
     public void mark(View view){
         ArrayList<String> attendanceList = new ArrayList<>();
+        absentList = new ArrayList<>();
         int len = studentList.size();
         for(int i=0;i<len;i++){
             String student = JSONUtil.toJSON(studentList.get(i), re_id, SessionManager.getUserId(context), SessionManager.getOrgId(context), su_id);
             attendanceList.add(student);
+            if(!studentList.get(i).isPresent()){
+                absentList.add(studentList.get(i));
+            }
         }
-        new MarkTask().execute(attendanceList.toString());
+        new MarkTask(context).execute(attendanceList.toString());
     }
     //TODO convert this into a snack bar or toast
     public void showDialog(){

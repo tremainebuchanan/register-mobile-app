@@ -43,19 +43,8 @@ public class Main extends AppCompatActivity {
         spinner.setVisibility(View.GONE);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-//        mAdapter = new SessionAdapter(sessionList, new SessionAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(Session session) {
-//                showStudentList(session);
-//            }
-//        });
-
-        //mAdapter = new SessionAdapter(sessionList);
-
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //mRecyclerView.addItemDecoration(new DividerItemDecorator(this));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -64,14 +53,13 @@ public class Main extends AppCompatActivity {
         client = new OkHttpClient();
         context = this;
         if(Connection.isConnected(context)){
-            new SessionTask().execute("");
+            new GetRegistersTask().execute("");
         }else{
             Toast.makeText(this, "No connection", Toast.LENGTH_LONG).show();
         }
-
     }
 
-    private class SessionTask extends AsyncTask<String, Void, ArrayList<Session>>{
+    private class GetRegistersTask extends AsyncTask<String, Void, ArrayList<Session>>{
         @Override
         protected void onPreExecute() {
             spinner.setVisibility(View.VISIBLE);
@@ -79,7 +67,7 @@ public class Main extends AppCompatActivity {
 
         @Override
         protected ArrayList<Session> doInBackground(String... urls) {
-            return Api.getSessions(client, SessionManager.getUserId(context));
+            return Api.getRegisters(client, SessionManager.getUserId(context));
         }
         @Override
         protected void onPostExecute(ArrayList<Session> result) {
@@ -89,24 +77,8 @@ public class Main extends AppCompatActivity {
     }
 
     private void showSessionList(ArrayList<Session> sessions){
-//        mAdapter = new SessionAdapter(sessions, new SessionAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(Session session) {
-//                showStudentList(session);
-//            }
-//        });
         mAdapter = new SessionAdapter(sessions);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-    }
-
-    private void showStudentList(Session session){
-        Intent intent = new Intent(Main.this, Register.class );
-        intent.putExtra("students", session.getStudents());
-        intent.putExtra("title", session.getSessionName());
-        intent.putExtra("re_id", session.getSessionId());
-        intent.putExtra("su_id", session.getSubjectId());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 }
