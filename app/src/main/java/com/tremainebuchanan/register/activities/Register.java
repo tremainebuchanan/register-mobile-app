@@ -102,13 +102,6 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void updateUI(ArrayList<Student> students){
-        studentList = students;
-        mAdapter = new StudentAdapter(students);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
-    }
-
     private void renderStudentList(String students){
         try{
             ArrayList<Student> studentsList = new ArrayList<>();
