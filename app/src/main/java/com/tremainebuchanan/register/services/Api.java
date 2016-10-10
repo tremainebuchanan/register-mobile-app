@@ -14,7 +14,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -128,8 +131,10 @@ public class Api {
                 String session_name = subject.getString("su_title");
                 String student_count = register.getString("count");
                 String subject_id = subject.getString("_id");
+                String period = register.getString("temp_period");
                 JSONArray students = register.getJSONArray("students");
-                sessions.add(new Session(session_id, session_name, student_count, subject_id, students.toString()));
+                Log.i(TAG, period);
+                sessions.add(new Session(session_id, session_name, student_count, subject_id, students.toString(), period));
             }
             return sessions;
         }catch (JSONException e) {
