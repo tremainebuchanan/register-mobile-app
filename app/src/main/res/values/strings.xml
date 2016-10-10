@@ -9,4 +9,7 @@
     <string name="user_auth_progress">Authenticating</string>
     <string name="view_btn">view</string>
     <string name="action_sign_in_short">Sign in</string>
+    <string name="sms_start">was absent from</string>
+    <string name="sms_end">today.</string>
+    <string name="marking_progress">Marking</string>
 </resources>
