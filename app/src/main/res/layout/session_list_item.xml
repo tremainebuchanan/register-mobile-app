@@ -64,17 +64,17 @@
                 android:text="Jan - Dec 2016"
                 tools:text="Jan - Dec 2016"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/period"
-                android:layout_toEndOf="@id/count"
-                android:id="@+id/status_text"
-                android:layout_marginStart="16dp"
-                android:textSize="15sp"
-                android:fontFamily="sans-serif-light"
-                android:text="Marked Sep 28 at 4pm"
-                tools:text="Marked Sep 28 at 4pm"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/period"-->
+                <!--android:layout_toEndOf="@id/count"-->
+                <!--android:id="@+id/status_text"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:textSize="15sp"-->
+                <!--android:fontFamily="sans-serif-light"-->
+                <!--android:text="Marked Sep 28 at 4pm"-->
+                <!--tools:text="Marked Sep 28 at 4pm"/>-->
 
         </RelativeLayout>
         </android.support.v7.widget.CardView>

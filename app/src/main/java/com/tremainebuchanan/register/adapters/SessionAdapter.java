@@ -28,7 +28,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
     private final String TAG = SessionAdapter.class.getSimpleName();
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView name, count;
+        TextView name, count, period;
         CardView card;
         public final Context context;
         public ViewHolder(View view) {
@@ -36,6 +36,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
             context = view.getContext();
             count = (TextView) view.findViewById(R.id.count);
             name = (TextView) view.findViewById(R.id.session_name);
+            period = (TextView) view.findViewById(R.id.period);
             card = (CardView) view.findViewById(R.id.session_card);
         }
     }
@@ -55,6 +56,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
         final Session session = sessionList.get(position);
         holder.name.setText(session.getSessionName());
         holder.count.setText(session.getStudentCount());
+        holder.period.setText(session.getPeriod());
         holder.card.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
