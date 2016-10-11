@@ -12,4 +12,5 @@
     <string name="sms_start">was absent from</string>
     <string name="sms_end">today.</string>
     <string name="marking_progress">Marking</string>
+    <string name="logout">Logout</string>
 </resources>
