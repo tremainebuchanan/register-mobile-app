@@ -1,13 +1,9 @@
 package com.tremainebuchanan.register.utils;
 
-import android.content.Context;
 import android.util.Log;
-
 import com.tremainebuchanan.register.data.Student;
 import com.tremainebuchanan.register.data.User;
 import com.tremainebuchanan.register.services.Api;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +28,6 @@ public class JSONUtil {
     public static String toJSON(Student student, String re_id, String user_id, String or_id, String su_id){
         String status = Api.getPresentId();
         if(!student.isPresent()) status = Api.getAbsentId();
-        if(student.isPresent())
         try{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("st_id", student.getId());
