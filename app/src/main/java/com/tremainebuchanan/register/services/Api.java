@@ -1,24 +1,14 @@
 package com.tremainebuchanan.register.services;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.tremainebuchanan.register.data.Session;
 import com.tremainebuchanan.register.data.Student;
-import com.tremainebuchanan.register.data.User;
-import com.tremainebuchanan.register.utils.SessionManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -133,7 +123,6 @@ public class Api {
                 String subject_id = subject.getString("_id");
                 String period = register.getString("temp_period");
                 JSONArray students = register.getJSONArray("students");
-                Log.i(TAG, period);
                 sessions.add(new Session(session_id, session_name, student_count, subject_id, students.toString(), period));
             }
             return sessions;

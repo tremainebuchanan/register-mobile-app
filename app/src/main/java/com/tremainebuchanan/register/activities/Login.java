@@ -3,8 +3,10 @@ package com.tremainebuchanan.register.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.tremainebuchanan.register.R;
 import com.tremainebuchanan.register.data.User;
 import com.tremainebuchanan.register.services.Api;
+import com.tremainebuchanan.register.services.Connection;
 import com.tremainebuchanan.register.utils.JSONUtil;
 import com.tremainebuchanan.register.utils.SessionManager;
 
@@ -90,7 +93,11 @@ public class Login extends AppCompatActivity {
        String user_password = password.getText().toString().trim();
        if (!validateEmail(user_email) && !validatePassword(user_password)) {
            user = new User(user_email, user_password);
-           new LoginTask(context).execute("");
+           if (Connection.isConnected(context)) {
+               new LoginTask(context).execute("");
+           }else{
+               showDialog();
+           }
        }else{
            Toast.makeText(getApplicationContext(), R.string.credentials_error, Toast.LENGTH_LONG).show();
        }
@@ -114,6 +121,22 @@ public class Login extends AppCompatActivity {
         }catch(JSONException e){
             Log.e(TAG, "Error in parsing json server response");
         }
+    }
+
+    public void showDialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+        alertDialogBuilder.setTitle("No network connection");
+        alertDialogBuilder
+                .setMessage("No internet connection found.")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 }

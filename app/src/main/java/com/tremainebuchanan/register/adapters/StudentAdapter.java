@@ -59,13 +59,14 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
         holder.attendance_status.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                student.setPresent(holder.attendance_status.isChecked());
                 String message = "marked present";
                 if(!holder.attendance_status.isChecked()){
                     message = "marked absent";
                     holder.initial.setText("A");
+                    student.setPresent(false);
                 }else{
                     holder.initial.setText("P");
+                    student.setPresent(true);
                 }
                 Toast.makeText(view.getContext(), holder.name.getText().toString() + " " + message, Toast.LENGTH_LONG).show();
             }
