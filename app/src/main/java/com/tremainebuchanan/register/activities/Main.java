@@ -26,6 +26,7 @@ import com.tremainebuchanan.register.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.OkHttpClient;
 
@@ -64,23 +65,33 @@ public class Main extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+       switch (item.getItemId()){
+//            case R.id.action_settings: showSetting();
+//                break;
+            case R.id.action_logout: logoutUser();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logoutUser(){
+        if(SessionManager.removeUser(context)){
+            this.finish();
+            Log.i(TAG, "Logout");
+            Intent intent = new Intent(Main.this, Login.class);
+            startActivity(intent);
+        }
+    }
+
+    private void showSetting(){
+        Intent intent = new Intent(Main.this, Settings.class);
+        startActivity(intent);
     }
 
     private class GetRegistersTask extends AsyncTask<String, Void, ArrayList<Session>>{
