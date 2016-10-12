@@ -47,5 +47,11 @@ public class SessionManager {
         return getPrefs(context).getString(ORG_ID, null);
     }
 
+    public static boolean removeUser(Context context){
+        SharedPreferences.Editor editor = getPrefs(context).edit();
+        editor.clear().apply();
+        return true;
+    }
+
 
 }
