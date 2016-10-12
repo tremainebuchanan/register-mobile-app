@@ -17,14 +17,21 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Main"></activity>
-
+        <activity android:name=".activities.Main" />
         <activity
             android:name=".activities.Register"
+            android:parentActivityName=".activities.Main" />
+        <activity
+            android:name=".activities.Settings"
+            android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.Main">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tremainebuchanan.register.activities.Main" />
         </activity>
     </application>
 
