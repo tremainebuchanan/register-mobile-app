@@ -14,11 +14,18 @@
         android:id="@+id/progressbar"
         android:progressDrawable="@drawable/circular_progress"/>
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/student_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent">
+
+    </ListView>
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/student_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scrollbars="vertical" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -27,7 +34,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
-        android:onClick="mark"
+        android:onClick="prepareAttendanceList"
         android:src="@drawable/ic_done" />
 
 </RelativeLayout>
