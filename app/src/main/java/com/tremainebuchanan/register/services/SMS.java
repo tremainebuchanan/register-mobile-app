@@ -14,7 +14,8 @@ public class SMS {
         int len = students.size();
         SmsManager manager = SmsManager.getDefault();
         for(int i=0;i<len;i++){
-            message = students.get(i).getName() + " was absent from " + title + " today.";
+            message = students.get(i).getName() + " was absent from Track & Field " + title +
+                    " today at XLCR High. You will be billed for this AUTOMATED MESSAGE.";
             if(!students.get(i).getContact().isEmpty()){
                 String contact = "+1876" + students.get(i).getContact();
                 manager.sendTextMessage(contact, null, message, null, null);
