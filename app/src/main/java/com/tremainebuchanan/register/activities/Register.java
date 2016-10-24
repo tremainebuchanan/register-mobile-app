@@ -76,7 +76,7 @@ public class Register extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result.equals("success")){
-                //SMS.send(absentList, title);
+                SMS.send(absentList, title);
                 if(dialog.isShowing()) dialog.dismiss();
                showDialog("Marked", "Your register has been marked");
             }
