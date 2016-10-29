@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Settings">
+
+    <PreferenceCategory
+        android:title="SMS Notification"
+        android:key="sms_category">
+
+        <CheckBoxPreference
+            android:key="send_sms"
+            android:summary="Sends SMS denoting absence"
+            android:title="Enable SMS notification"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

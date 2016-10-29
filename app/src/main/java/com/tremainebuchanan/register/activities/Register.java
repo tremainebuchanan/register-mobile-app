@@ -22,6 +22,8 @@ import com.tremainebuchanan.register.services.Api;
 import com.tremainebuchanan.register.services.SMS;
 import com.tremainebuchanan.register.utils.JSONUtil;
 import com.tremainebuchanan.register.utils.SessionManager;
+import com.tremainebuchanan.register.utils.SettingsPreference;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,7 +78,10 @@ public class Register extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result.equals("success")){
-                SMS.send(absentList, title);
+                //if the user enabled sms notification in settings send sms
+                if (SettingsPreference.sendSMS(getApplicationContext())) {
+                    SMS.send(absentList, title, SessionManager.getOrgName(getApplicationContext()));
+                }
                 if(dialog.isShowing()) dialog.dismiss();
                showDialog("Marked", "Your register has been marked");
             }
@@ -161,7 +166,7 @@ public class Register extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         AbsentListAdapter adapter = new AbsentListAdapter(this, absentees);
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.student_absent_list, null);
+        final View convertView = inflater.inflate(R.layout.student_absent_list, null);
         alertDialogBuilder.setView(convertView);
         ListView listView = (ListView) convertView.findViewById(R.id.absentees);
         listView.setAdapter(adapter);

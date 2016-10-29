@@ -1,5 +1,4 @@
 package com.tremainebuchanan.register.services;
-
 import android.telephony.SmsManager;
 import com.tremainebuchanan.register.data.Student;
 import java.util.ArrayList;
@@ -9,18 +8,18 @@ import java.util.ArrayList;
  */
 
 public class SMS {
-    public static void send(ArrayList<Student> students, String title){
+
+    public static void send(ArrayList<Student> students, String title, String org_name){
         String message = "";
         int len = students.size();
         SmsManager manager = SmsManager.getDefault();
         for(int i=0;i<len;i++){
-            message = students.get(i).getName() + " was absent from Track & Field " + title +
-                    " today at XLCR High. You will be billed for this AUTOMATED MESSAGE.";
+            message = students.get(i).getName() + " was absent from " + title +
+                    " today at " + org_name + ". You will be billed for this AUTOMATED MESSAGE.";
             if(!students.get(i).getContact().isEmpty()){
                 String contact = "+1876" + students.get(i).getContact();
                 manager.sendTextMessage(contact, null, message, null, null);
             }
-
         }
     }
 }

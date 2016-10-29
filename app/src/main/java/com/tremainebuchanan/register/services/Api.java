@@ -1,5 +1,6 @@
 package com.tremainebuchanan.register.services;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import com.tremainebuchanan.register.data.Session;
@@ -74,6 +75,7 @@ public class Api {
         //return null;
     }
 
+    @Nullable
     private static String parseRegisterResponse(String response){
         try {
             JSONObject res = new JSONObject(response);
@@ -86,6 +88,7 @@ public class Api {
         return null;
     }
 
+    @Nullable
     private static ArrayList<Student> parseStudentResponse(String response){
         ArrayList<Student> students = new ArrayList<>();
         if(TextUtils.isEmpty(response)){ return null; }
