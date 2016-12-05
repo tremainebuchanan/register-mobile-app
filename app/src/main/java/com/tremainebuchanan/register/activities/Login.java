@@ -119,7 +119,7 @@ public class Login extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }catch(JSONException e){
-            Log.e(TAG, "Error in parsing json server response");
+            Log.e(TAG, "Error in parsing json server response for attempting user login");
         }
     }
 
